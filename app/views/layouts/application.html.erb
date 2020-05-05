@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bookers3</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <header class="header">
+    <nav class="navbar navbar-main navbar-default" id="slide-nav">
+    <div class="container">
+    <div class="navber-header">
+      <h3 class="navbar-brand">Bookers</h3>
+    </div>
+    <div id="gnavi" class="collapse navbar-collapse navbar-right">
+    <div id="slidemenu">
+     <ul class="nav navbar-nav navber-right" data-hover="dropdown" data-animations="zoomIn fadeIn fadeInUp fadeIn">
+     <% if user_signed_in? %>
+      <li class="">
+        <%= link_to(user_path(current_user.id), class: '') do %>
+          <i class="fas fa-user-alt"></i> Home
+        <% end %>
+      </li>
+      <li class="">
+        <%= link_to(users_path, class: '') do %>
+          <i class="far fa-address-card"></i> Users
+        <% end %>
+      </li>
+      <li class=>
+        <%= link_to(books_path, class: '') do %>
+          <i class="fas fa-book"></i> Books
+        <% end %>
+      </li>
+      <li class="">
+        <%= link_to( destroy_user_session_path, method: :delete, class: '' ) do %>
+          <i class="fas fa-sign-out-alt"></i> logout
+        <% end %>
+      </li>
+      <% else %>
+        <li class="">
+        <%= link_to(root_path, class: '') do %>
+          <i class="fas fa-user-alt"></i> Home
+        <% end %>
+        </li>
+        <li class="">
+          <%= link_to(home_about_path, class: '') do %>
+          <i class="far fa-address-card"></i> About
+          <% end %>
+        </li>
+        <li class="">
+          <%= link_to( new_user_registration_path, class: '') do %>
+          <i class="fas fa-user-plus"></i> sign up
+          <% end %>
+        </li>
+        <li class="">
+          <%= link_to(new_user_session_path, class: '') do %>
+          <i class="fas fa-sign-in-alt"></i> login
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+    </div>
+    </div>
+    </div>
+  </nav>
+  </header>
+
+  <div class="container">
+    <% flash.each do |key, value| %>
+    <%= content_tag(:div, value, class: "#{key}") %>
+  <% end %>
+  </div>
+    <%= yield %>
+  </body>
+</html>

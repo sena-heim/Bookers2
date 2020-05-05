@@ -1,0 +1,83 @@
+<div class="container">
+<%= form_for(@book, url: books_path)  do |f| %>
+    <% if @book.errors.any? %>
+        <div class="error_explantion">
+            <h2><%= @book.errors.count %>件のerrorが発生しました。</h2>
+            <ul>
+                <% @book.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+    <% if flash[:notice] %>
+        <div class="flash">
+            <%= flash[:notice] %>
+        </div>
+    <% end %>
+    <div class="row mt-3">
+        <div class="col-xs-3">
+            <h3>User info</h3>
+            <div>
+                <%= attachment_image_tag @user, :profile_image, size: '100x100' , format: 'jpeg', class: "pull-left profile-img ", fallback: "no_image.png",　size:'100x100' %>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th><%= @user.name %></th>
+                </tr>
+                <tr>
+                    <th>introduction</th>
+                    <td class="small"><%= @user.introduction %></td>
+                </tr>
+            </table>
+            <% if @user.id == current_user.id %>
+                <%= link_to(edit_user_path(@user), class: 'btn btn-info btn-block') do %>
+                    <i class="fas fa-wrench"></i>
+                <% end %>
+            <% end %>
+            <h2>New book</h2>
+            <div class="form-group">
+                <%= f.label :title, 'Title' %>
+                <%= f.text_field :title, class: 'form-control' %>
+            </div>
+            <div class="form-group">
+                <%= f.label :body, "opinion" %>
+                <%= f.text_area :body, class: 'form-control'%>
+            </div>
+                <%= f.submit "Create Book", class: 'btn btn-info btn-block', disable_with: 'Creating...' %>
+        </div>
+    <div class="col-xs-9">
+        <h3>Book detail</h3>
+        <table class="table table-hover small">
+        <thead>
+            <tr>
+                <th>user</th>
+                <th>title</th>
+                <th>opinion</th>
+                <th></th>
+            </tr>  
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                <%= link_to(user_path(@book_show.user.id),class: 'text-center') do %>
+                    <%= attachment_image_tag @book_show.user, :profile_image, size: '30x30' , format: 'jpeg', class: "pull-left profile-img ", fallback: "no_image.png",　size:'30x30' %><br>
+                    <%= @book_show.user.name %>
+                <% end %>
+                </th>
+                <td><%= link_to @book_show.title, book_path(@book_show.id) %></td>
+                <td><%= @book_show.body %></td>
+                <td>
+                   <% if @book_show.user == current_user %>
+                    <%= link_to "Edit", edit_book_path(@book_show), class: 'btn btn-info' %>
+                    <%= link_to "Destroy", book_path(@book_show), class: 'btn btn-success', method: :delete %>
+                  <% end %> 
+                </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+</div>
+<% end %>
+</div>
